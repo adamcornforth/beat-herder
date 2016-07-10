@@ -9,8 +9,7 @@ for (var i = artist_urls.length - 1; i >= 0; i--) {
     request('http://www.beatherder.co.uk/artists/'+artist_urls[i], function (error, response, body) {
       if (!error && response.statusCode == 200) {
         x(body, 'dl.artist-info', ['dd'])(function(err, header) {
-          console.log(artist_urls[i]);
-          console.log(header);
+          console.log(header.concat([artist_urls[i]]).reverse());
         });
       }
     });
