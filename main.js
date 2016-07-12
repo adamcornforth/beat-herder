@@ -8,8 +8,13 @@ for (var i = artist_urls.length - 1; i >= 0; i--) {
   (function(i){
     request('http://www.beatherder.co.uk/artists/'+artist_urls[i], function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        x(body, 'dl.artist-info', ['dd'])(function(err, header) {
-          console.log(header.concat([artist_urls[i]]).reverse());
+        x(body, 'dl.artist-info', ['dd'])(function(err, dd) {
+    		x(body, 'a.icon--soundcloud@href')(function(err, sc) {
+    			x(body, 'div.title-container h1.title')(function(err, title) {
+	      			var arr = dd.concat(['http://www.beatherder.co.uk/artists/'+artist_urls[i], sc, title]).reverse();
+	      			process.stdout.write("\"" + arr[0] + "\", " + arr[1] + ", " + arr[2] + ", " + arr[3] + ", " + arr[4] + "\n");
+    			}); 
+      		});
         });
       }
     });
