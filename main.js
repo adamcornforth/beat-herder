@@ -19,26 +19,28 @@ let fetchData = async function () {
         // Attempt to get soundcloud URL and description from artist page
         const urls = artistUrls[index] && response.ok ? await x(body, 'ul.c-icons', ['a.c-icon-box@href']) : [];
         const soundcloud = urls ? urls.find(link => link.includes('soundcloud')) : null;
+        const when = artistUrls[index] && response.ok ? await x(body, 'div.p-wysiwyg', 'p.u-text-transform--upper') : null;
         const description = artistUrls[index] && response.ok ? await x(body, 'div.p-wysiwyg', 'div div p') : null;
 
         return {
             name,
             stage: metas[index],
-            soundcloud,
-            description,
+            when: when ? when : '',
+            soundcloud: soundcloud ? soundcloud : '',
+            description: description ? description : ''
         };
     }));
 
     // Build CSV string
     let csv = items.reduce((acc, item) => {
-        const { name, stage, soundcloud, description } = item;
-        const row = [name, stage, soundcloud, description].map(cell => `"${cell}"`).join(',');
+        const { name, stage, when, soundcloud, description } = item;
+        const row = [name, stage, when, soundcloud, description].map(cell => `"${cell}"`).join(',');
         acc.push(row);
         return acc;
     }, []).join('\n');
 
     // Add header row and output CSV
-    csv = `"Name","Stage","Soundcloud","Description"\n${csv}`;
+    csv = `"Name","Stage","When","Soundcloud","Description"\n${csv}`;
     console.log(csv);
 }
 
