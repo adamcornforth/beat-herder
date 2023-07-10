@@ -1,22 +1,45 @@
-var request = require('request');
-var Xray = require('x-ray');
-var x = Xray();
+import fetch from 'node-fetch';
+import Xray from 'x-ray';
 
-var artist_urls = ["andhim", "booka-shade", "chronixx", "claudevonstroke", "donovan", "formatb", "james", "justin-martin", "mike-snow", "riton", "tod-terje", "a-guy-called-gerald", "a-skillz1", "abba-arrival", "b-traits", "beardyman-dream-team", "beatangers", "buffalo-brothers", "captain-hotknives", "chris-coco", "cleancutkid", "deekline", "delta-heavy", "derrickcarter", "digitalism", "doorly", "theorb", "dub-pistols", "easy-star-all-stars", "edsolo", "extra-love", "flamingods", "generallevy", "gentlemans-dub-club1", "greg-wilson", "haelos", "higher-intelligence", "honeyfeet", "jauz", "jesserose", "jfb", "jinx-dubdadda", "jon-rundell", "krafty-kuts1", "krysko", "lady-waks", "mark-archer", "marshalljefferson", "mr-c", "mr-scruff", "new-kingston", "nipples-of-venus", "ohmygoditsthechurch", "paul-taylor-retro", "rationale", "samson-sounds", "sonnyfodera", "stanton-warriors", "subculturesage", "tcftmcjakes", "the-lancashire-hotpots", "tom-stade", "utah-saints", "wheres-north1", "andy-capps-funky-disco-presents-wow", "annie-tt-resident", "apexape", "appleblim", "bang-bang-romeo", "beans-on-toast", "big-bad-soundsystem", "blanty", "bliss-zion", "bodie", "boe-lee", "bombstrikes", "bowsa", "broadwaysounds", "bunnington-judah", "cashanddavid", "chapter-41", "chimpo", "chrisprice", "cojo1", "conscious-way", "contineum", "cosmosheldrake", "credit-to-the-nation", "crystal-gef", "daisy", "dave-heaton", "dc-bell", "dead-punk", "dextric", "digdeepdjs", "dirtbox", "dj-fluffybuffle", "dj-hood", "dj-phez", "templehead", "dj-xander", "dohnut", "dub-smugglers-dj-set", "dub-smugglers-sound-system", "dubbers", "ed-mahon", "ed-stones-the-bd3", "ed-tangent", "eddie-earthquake-and-the-tremors", "emma-clair", "endor", "ennio-maccaroni", "escaperoots", "extra-spectrum", "fandjango", "fatherfunk", "fatherfunk-allstars", "fern-brady", "fibre", "flamegriller", "formation", "foxes-faux1", "fraser", "fronteers", "funklebuck", "fusionbrothers", "georgia", "good-foxy", "grinny-grandad-live", "rimbimrootsleon", "happy-daggers", "henge", "homegrown-djs", "hot-damn", "hybrid-theory", "irie-vibes", "ital-guidance", "ixindamix", "jbear-and-the-giants", "jamie-berry", "jaynewman", "jayney-mac", "big-jim", "john-paynter", "john-tree", "johnny-clash", "jon-sterckx", "jonnie-common", "karl-roscoe", "ken-evil", "kikobun", "kwah", "lateforlife", "laughing-buddha", "lazy-susan2", "lewisgarland", "lindsey-tt-resident", "liquid-lounge", "lorraine", "louisberry", "lovegrocer-meets-dubdadda", "lowdown-dirty-djs", "luca-dread", "lukey-p", "lula-and-the-bebops", "lychee", "lyons-and-la-zel", "mitch", "madame-electrifie", "mafia-kiss", "magic-island-djs", "mamajerk-andthe-ladyfingers", "man-made", "marc-constantine", "markturner", "matt-montez", "matty-banton", "maxi-roots", "meadowlark", "miss-chip", "misskittyflip", "mr-tooley", "mojofilter", "moon-hooch", "mooqee-bombstrikes", "mr-chukkle", "barry-henderson", "mysterious-collective", "nana-moon", "naut", "nema-kuta", "nems", "nicolabear", "nicolasdisco", "nimmo", "nucleus-roots-djset", "offmenut", "old-boy", "otherkin", "paddy-steer", "papercranes", "paul-thornton-chris-holt", "peach-tt-resident1", "pete-foxon", "pete-lawrence", "plewsy", "pocketsizedave", "red-eye-hifi", "red-j-tt-resident", "red-tin-dave", "rob-bright", "rob-rouse", "rubber-kazoo", "rufmouth", "rum-jig", "ryan-hartley", "sacha-schwarz", "sam-gore", "samuel-s-parkes", "sean-p", "sean-spindrift", "shack", "shaka-loves-you", "shunya", "simon-lebumbum", "simon-scott-dimensions", "sir-robin-longshot", "sistemma", "skank-marvin", "skapes", "skaramba-hifi", "skayaman", "solana", "solardo", "solomon-oc", "stagger-lee-fisher", "steve-jahvis", "steve-thorpe", "swing-dance-leeds", "tanante", "ten-sheds", "the-amazons", "chicken-brothers", "the-fairey-brass-band", "the-farmer", "firebeneaththesea", "the-folkestra", "midnight-zu", "ruby-stone", "the-snides", "the-vyrll-society", "ticker", "tirikilatops", "toby-farrow", "tom-boogizm", "tomspirals", "tom-walker", "tongues", "tonybasnett", "twogood", "union-jack", "vibesman", "waka", "wbbl", "lawless", "wenro", "willtramp", "witch", "yonaka", "zibra", "zut-alors"];
+let fetchData = async function () {
+    const x = Xray();
 
-for (var i = artist_urls.length - 1; i >= 0; i--) {
-  (function(i){
-    request('http://www.beatherder.co.uk/artists/'+artist_urls[i], function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        x(body, 'dl.artist-info', ['dd'])(function(err, dd) {
-    		x(body, 'a.icon--soundcloud@href')(function(err, sc) {
-    			x(body, 'div.title-container h1.title')(function(err, title) {
-	      			var arr = dd.concat(['http://www.beatherder.co.uk/artists/'+artist_urls[i], sc, title]).reverse();
-	      			process.stdout.write("\"" + arr[0] + "\", " + arr[1] + ", " + arr[2] + ", " + arr[3] + ", " + arr[4] + "\n");
-    			}); 
-      		});
-        });
-      }
-    });
-  })(i);
+    let ukLineUpTabDj = await fetch('https://beatherder.co.uk/line-up?tab=dj');
+    ukLineUpTabDj = await ukLineUpTabDj.text();
+
+    const titles = await x(ukLineUpTabDj, 'ul.l-grid', ['h3.c-card__title']);
+    const metas = await x(ukLineUpTabDj, 'ul.l-grid', ['p.c-card__meta']);
+    const artistUrls = await x(ukLineUpTabDj, 'ul.l-grid', ['a@href']);
+
+    // For each artist, fetch their page and get their soundcloud URL and description
+    let items = await Promise.all(titles.map(async (name, index) => {
+        const response = await fetch(`https://beatherder.co.uk${artistUrls[index]}`);
+        const body = await response.text();
+
+        // Attempt to get soundcloud URL and description from artist page
+        const urls = artistUrls[index] && response.ok ? await x(body, 'ul.c-icons', ['a.c-icon-box@href']) : [];
+        const soundcloud = urls ? urls.find(link => link.includes('soundcloud')) : null;
+        const description = artistUrls[index] && response.ok ? await x(body, 'div.p-wysiwyg', 'div div p') : null;
+
+        return {
+            name,
+            stage: metas[index],
+            soundcloud,
+            description,
+        };
+    }));
+
+    // Build CSV string
+    let csv = items.reduce((acc, item) => {
+        const { name, stage, soundcloud, description } = item;
+        const row = [name, stage, soundcloud, description].map(cell => `"${cell}"`).join(',');
+        acc.push(row);
+        return acc;
+    }, []).join('\n');
+
+    // Add header row and output CSV
+    csv = `"Name","Stage","Soundcloud","Description"\n${csv}`;
+    console.log(csv);
 }
+
+fetchData();
