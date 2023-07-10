@@ -4,7 +4,7 @@ import Xray from 'x-ray';
 let fetchData = async function () {
     const x = Xray();
 
-    let ukLineUpTabDj = await fetch('https://beatherder.co.uk/line-up?tab=dj');
+    let ukLineUpTabDj = await fetch('https://beatherder.co.uk/line-up?tab=all');
     ukLineUpTabDj = await ukLineUpTabDj.text();
 
     const titles = await x(ukLineUpTabDj, 'ul.l-grid', ['h3.c-card__title']);
